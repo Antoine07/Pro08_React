@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
-import { setNumber } from '../actions/actions-types'
+import { setNumber } from '../actions/actions-types';
 
 import './Number.scss';
 

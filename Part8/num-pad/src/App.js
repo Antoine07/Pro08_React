@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.scss';
 import { connect } from 'react-redux';
 import Number from './components/Number';
 import Input from './components/Input';
 
-const App = ({calculator}) => {
+import { initMultiplications } from './actions/actions-types';
 
-  const { numpad, numbers } = calculator;
+const App = ({calculator, initMultiplications}) => {
+
+  // life cycle 
+  useEffect(() => {
+    initMultiplications();
+  }, []);
+
+  const { numpad, numbers, multiplications } = calculator;
   
   return (
     <div className="container">
@@ -22,11 +29,17 @@ const App = ({calculator}) => {
       </div>
       <div className="row">
         <div className="col-md-12">
-          Reset ...
+          {multiplications.length > 0 && multiplications.map((multiplication, i) => {
+            console.log(multiplication)
+          }) }
        </div>
       </div>
     </div>
   );
 }
 
-export default connect(state => { return { ...state } } )(App);
+const mapStateToProps = state => { return { ...state } } ;
+
+const mapDispatchToProps = { initMultiplications }
+
+export default connect(mapStateToProps,mapDispatchToProps)(App);
