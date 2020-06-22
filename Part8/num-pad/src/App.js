@@ -1,26 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import { connect } from 'react-redux';
+import Number from './components/Number';
+import Input from './components/Input';
 
-function App() {
+const App = ({calculator}) => {
+
+  const { numpad, numbers } = calculator;
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+        <Input numbers={numbers} />
+      <div className="row">
+        <div className="col-md-8">
+          <div className="container-number">
+            {numpad.map((number, index) =>
+              <Number key={index} number={number} />
+            )}
+          </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-md-12">
+          Reset ...
+       </div>
+      </div>
     </div>
   );
 }
 
-export default App;
+export default connect(state => { return { ...state } } )(App);
