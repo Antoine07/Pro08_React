@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Hello React</title>
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <!-- permet de compiler le JSX -->
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <style>
+    .app__post {
+      color: purple;
+    }
+
+    li {
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+
+    const Users = [
+      { id: 1, name: "Alice" },
+      { id: 2, name: "Alan" },
+      { id: 3, name: "Phil" },
+      { id: 4, name: "Naoudi" },
+      { id: 5, name: "Fenley" },
+    ];
+
+    const Styles = [
+      { color: "#721c24", backgroundColor: "#f5c6cb" },
+      { color: "#155724", backgroundColor: "#c3e6cb" },
+    ];
+
+    // const Bagde = (props) => <span className="badge badge-primary badge-pill" >{props.id}</span> ;
+    const Badge = ({ id }) => <span className="badge badge-primary badge-pill" >{id}</span>;
+
+    class User extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          isHover: true
+        }
+      }
+
+      changeColor = () => {
+
+        this.setState({
+          isHover: !this.state.isHover
+        })
+      }
+
+      render() {
+        const { name, id } = this.props.user;
+        const pos = this.state.isHover ? 0 : 1;
+        const style = Styles[pos];
+
+        return (
+          <li
+            className="list-group-item d-flex justify-content-between align-items-center"
+            style={style}
+            onMouseOver={this.changeColor}
+            onMouseOut={this.changeColor}
+          >
+            {name}
+            <Badge id={id} />
+          </li>
+        )
+      }
+    }
+
+    class Container extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          users: []
+        }
+      }
+
+      componentDidMount() {
+        this.setState({
+          users: Users
+        })
+      }
+
+      shuffle = e => {
+        e.preventDefault();
+        this.state.users.sort(() => Math.random() - .5);
+        this.setState( { users : this.state.users }) ;
+      }
+
+      render() {
+
+        const { users } = this.state;
+
+        return (
+          <div className="container">
+            <div className="row" >
+              <div className="col-md-6">
+                <nav className="nav nav-pills flex-column flex-sm-row">
+                  <a
+                    href="#"
+                    className="flex-sm-fill text-sm-center nav-link active"
+                    onClick={this.shuffle}
+                  >Shuffle</a>
+                </nav>
+              </div>
+              <div className="container">
+                <div className="row">
+                  <div className="col-md-12">
+                    <ul className="list-group list-group-vertical-lg">
+                      {users.map((user, i) => <User user={user} key={i} />)}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )
+      }
+    }
+
+
+    class App extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          users: []
+        }
+      }
+
+      render() {
+
+        return (
+          <Container />
+        )
+      }
+    }
+
+    ReactDOM.render(
+      <App />,
+      document.getElementById('root') // montage de deux composants
+    );
+  </script>
+</body>
+
+</html>

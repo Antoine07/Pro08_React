@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .container-grid-4 {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            width: calc(4 * 150px);
+            margin: auto;
+        }
+
+        .container-grid-4>* {
+            flex: 0 0 auto;
+            width: 150px;
+            height: 150px;
+            border: solid 1px aqua;
+            line-height: 150px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        const Colors = [
+            "#1E88E5", 
+            "#6AB7FF",
+            "#005CB2",
+            "#1976D2",
+            "#004BA0"
+        ];
+
+        class Square extends React.Component {
+
+            render() {
+
+                const { number, color } = this.props;
+
+                return (
+                    <div  style={{ backgroundColor: color }} >{number}</div>
+                )
+            }
+        }
+
+        class Checkboard extends React.Component {
+
+            render() {
+
+                const squares = [...Array(16).keys()];
+
+                // On passe les couleurs en props
+                const { colors } = this.props;
+
+                return (
+                    <div className="container-grid-4" >
+                        {squares.map(square => 
+                            <Square
+                                key={square}
+                                number={square + 1}
+                                color={colors[ square % 5 ]}
+                        />)}
+                    </div>
+                )
+            }
+        }
+
+        setInterval(() => {
+            ReactDOM.render(
+                <Checkboard colors={Colors} />,
+                document.getElementById('root')
+            );
+        }, 1000);
+
+    </script>
+</body>
+
+</html>

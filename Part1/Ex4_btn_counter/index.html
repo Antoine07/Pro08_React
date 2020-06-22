@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        class Counter extends React.Component {
+
+            constructor(props) {
+                super(props);
+                this.state = {
+                    count : 0,
+                    start : false
+                }
+
+                this.timer = null;
+            }
+
+            start = () => {
+                this.timer = setInterval(() =>{
+                    this.setState({
+                        count : this.state.count + this.props.step || 1,
+                        start : true
+                    })
+                }, 1000)
+            }
+
+            stop = () => {
+                clearInterval(this.timer);
+                this.setState({ start : false });
+            }
+
+            reset = () => {
+                clearInterval(this.timer);
+                this.setState({ start : false, count : 0 });
+            }
+
+            render() {
+
+                const { count, start } = this.state;
+                const { step } = this.props;
+
+                return (
+                    <div>
+                        <button
+                            className="btn btn-primary"
+                            onClick={this.start}
+                            disabled={start}
+                        >
+                            Start { ` + ${step}` }
+                        </button>
+                        <button
+                            className="btn btn-primary"
+                            onClick={this.stop}
+                            disabled={!start}
+                        >
+                            stop
+                        </button>
+                        { 
+                            start ? <button
+                                className="btn btn-primary"
+                                onClick={this.reset}
+                            >
+                                reset
+                            </button> : null
+
+                            /*
+                            // deuxième solution en jouant sur le coté passif du && 
+
+                            start && 
+                            <button
+                                className="btn btn-primary"
+                                onClick={this.reset}
+                            >
+                                reset
+                            </button>
+                            */
+                        }
+                        <p>{count}</p>
+                    </div>
+                )
+            }
+        }
+
+        class App extends React.Component {
+
+            render() {
+
+                return (
+                    <div>
+                        <Counter step={1} />
+                        <Counter step={2} />
+
+                    </div>
+                )
+            }
+        }
+
+        setInterval(() => {
+            ReactDOM.render(
+                <App />,
+                document.getElementById('root')
+            );
+        }, 1000);
+
+    </script>
+</body>
+
+</html>

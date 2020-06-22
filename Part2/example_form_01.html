@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        .heading {
+            color: purple;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        // Controler un champ de saisi avec React 
+        class UserForm extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = { value: '' };
+            }
+
+            handleChange = e => {
+                const { value, name } = e.target;
+                this.setState({ value : value });
+            }
+
+            handleSubmit = (event) => {
+                console.log(`New User : ${this.state.value}`);
+                event.preventDefault();
+            }
+
+            render() {
+
+                const { value } = this.state;
+
+                return (
+                    <form onSubmit={this.handleSubmit}>
+                        <label>
+                            Username:
+                            <input type="text" value={value} onChange={this.handleChange} />
+                            { value }
+                        </label>
+                        <input type="submit" value="Add" />
+                    </form>
+                );
+            }
+        }
+
+        ReactDOM.render(
+            <UserForm />,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+
+</html>

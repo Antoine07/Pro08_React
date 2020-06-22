@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        .heading {
+            color: purple;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        class AppLifeCycle extends React.Component {
+            constructor(props) {
+                super(props);
+                console.log("Constructor"); // Une seule fois au montage
+                // déclenche la mise à jour du render
+                this.state = { count: 0 }
+                // déclenche la mise à jour du render
+                this.timer = null;
+            }
+            // Une fois après le render
+            componentDidMount() {
+                console.log("After render method");
+                this.timer = setInterval(() => {
+                    this.setState({ count: this.state.count + 1 })
+                }, 1000);
+            }
+            // Après le premier render si state change
+            // prevState état du state avant, noté que les prevProps sont immutables.
+            componentDidUpdate(prevProps, prevState) {
+                console.log("Recréation du Component ou state mise à jour")
+                console.log(this.state, prevState);
+            }
+            // On supprime le component du DOM
+            componentWillUnmount() {
+                console.log("destrucion du Component");
+                clearInterval(this.timer);
+                clearInterval(removeCompent);
+            }
+            // rendu
+            render() {
+                console.log("render");
+                return (<div>Hello React</div>)
+            }
+        }
+        // rendu dans le DOM
+        ReactDOM.render(
+            <AppLifeCycle />,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+
+</html>

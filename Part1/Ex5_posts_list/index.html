@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        const Posts = [
+            { id: 16, title: "React JS" },
+            { id: 11, title: "React Native" },
+            { id: 100, title: "Angular" },
+            { id: 7, title: "Symfony" },
+            { id: 27, title: "MongoDB" },
+        ];
+
+        class Post extends React.Component {
+
+            render() {
+
+                const { title } = this.props;
+
+                return (
+                    <p> {title} </p>
+                )
+            }
+        }
+
+        class App extends React.Component {
+
+            render() {
+
+                return (
+                    <div>
+                        {Posts.map(post => <Post key={post.id} title={post.title} />)}
+                    </div>
+                )
+            }
+        }
+
+        setInterval(() => {
+            ReactDOM.render(
+                <App />,
+                document.getElementById('root')
+            );
+        }, 1000);
+
+    </script>
+</body>
+
+</html>

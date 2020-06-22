@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        .heading {
+            color: purple;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        const Users = props => {
+
+            return (
+                <ul>
+                    {props.users.map((user, i) => <li key={i}>{user}</li>)}
+                </ul>
+            )
+        }
+
+        // Controler un champ de saisi avec React 
+        class UserForm extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    value: '',
+                    users: [],
+                    error: false
+                };
+            }
+
+            handleChange = e => {
+                const { value, name } = e.target;
+                this.setState({ value: value.toUpperCase() });
+            }
+
+            handleSubmit = event => {
+                event.preventDefault();
+
+                const user = this.state.value;
+
+                if (this.state.users.indexOf(user) === -1) {
+                    this.state.users.push(user);
+
+                    this.setState({ users: this.state.users, error: false, value: '' });
+
+                    return;
+                }
+
+                this.setState({ error: true, value: '' });
+            }
+
+            render() {
+
+                const { value, users } = this.state;
+                const message = this.state.error ? "Désolé mais cet utilisateur existe déjà dans la liste" : null;
+
+                return (
+                    // Fragment permet de ne pas créer de div artificiel
+                    <React.Fragment>
+                        {message && <p className="error">{message}</p>}
+                        <form onSubmit={this.handleSubmit}>
+                            <label>
+                                Username:
+                            <input type="text" value={value} onChange={this.handleChange} />
+                            </label>
+                            <input type="submit" value="Add" />
+                        </form>
+                        {users && <Users users={users} />}
+                    </React.Fragment>
+                );
+            }
+        }
+
+        ReactDOM.render(
+            <UserForm />,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+
+</html>

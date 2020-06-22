@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <metacharset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        class BaseNumberInput extends React.Component {
+
+            handleChange = e => {
+                const { name, value } = e.target;
+
+                this.props.onChangeBase(name, value); // on passe les données au composant parent
+            }
+
+            render() {
+                const { base, number } = this.props; // récupérer dans le parent on controle tout dans ce composant
+
+                return (
+                    <div className="base form-group">
+                        <label htmlFor="number">{base}</label>
+                        <input
+                            type="text"
+                            onChange={this.handleChange}
+                            className="form-control"
+                            name={base}
+                            value={number} // donnée qui passe par les props
+                        />
+                    </div>
+                )
+            }
+        }
+
+        class App extends React.Component {
+            constructor(props) {
+                super(props);
+
+                this.state = {
+                    decimal: '',
+                    binary: '',
+                    message: ''
+                };
+            }
+
+            handleChange = (base, number) => {
+
+                if (base === 'decimal') {
+
+                    if (number != '' &&  ( isNaN(number) === true || /^0.*$/.test(String(number)) ) ) {
+
+                        this.setState({
+                            message: `Nous avons détecté que ${number} n'est pas un décimal`
+                        })
+
+                        return;
+                    }
+
+                    this.setState({
+                        decimal: number,
+                        binary:  number == '' ? '' : Number(number).toString(2),
+                        message: ''
+                    });
+                }
+
+                if (base === 'binary') {
+
+                    if (number != '' && /^[01]+$/.test(String(number)) == false) {
+
+                        this.setState({
+                            message: `Nous avons détecté que ${number} n'est pas un binaire`
+                        })
+
+                        return;
+                    }
+
+                    this.setState({
+                        decimal:  number == '' ? '' : parseInt(number, 2),
+                        binary: number,
+                        message: ''
+                    });
+                }
+            }
+
+            render() {
+
+                const { binary, decimal, message } = this.state;
+
+                return (
+                    <React.Fragment>
+                        {message && <p>{message}</p>}
+                        <BaseNumberInput
+                            onChangeBase={this.handleChange}
+                            base="decimal"
+                            number={decimal}
+                        />
+                        <BaseNumberInput
+                            onChangeBase={this.handleChange}
+                            base="binary"
+                            number={binary}
+                        />
+                    </React.Fragment>
+                );
+            }
+        }
+
+        ReactDOM.render(
+            <App />,
+            document.getElementById('root') // montage de deux composants
+        );
+    </script>
+</body>
+
+</html>

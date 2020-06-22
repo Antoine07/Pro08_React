@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        .heading {
+            color: purple;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+       
+       class App extends React.Component{
+
+           constructor(props){
+               super(props); // en JS pour récupérer les props passer dans le constructeur du parent
+
+                // variable MUTABLE mais il faudra la mettre à jour avec une méthode spécifique de React
+               this.state = { count:0 };
+           }
+
+           // DOM is ready 
+           componentDidMount(){
+            setTimeout(() => {
+                // Fonction de mise à jour du state
+                // this.state.count = this.state.count + 1 ;
+
+                // console.log(this.state.count)
+
+                // cette méthode met à jour en ré-executant la fonction render
+                // donc si il y a une différence entre la valeur initiale et celle mis à jour
+                // React ré-execute le rendu
+                this.setState( {
+                    count : this.state.count + 1
+                })
+            }, 1000);
+           }
+
+           render(){
+
+               return(
+                   <p>{this.state.count}</p>
+               )
+           }
+       }
+
+        // rendu dans le DOM
+        ReactDOM.render(
+            <App name="Je suis une classe définissant un composant" choice={true} />,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+
+</html>

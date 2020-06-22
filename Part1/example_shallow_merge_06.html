@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        .heading {
+            color: purple;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        class TestShallowMerge extends React.Component {
+            constructor(props) {
+                super(props);
+
+                this.state = {
+                    count: 0,
+                    message: 'Hello React'
+                };
+            }
+
+            componentDidMount() {
+
+                // Un delta et React change uniquement par rapport au state les valeurs qui ont changé
+                this.setState({
+                    count: 10
+                })
+            }
+
+            render() {
+
+                return (
+                    <div>
+                        <p>{this.state.count}</p>
+                        <p>{this.state.message}</p>
+                    </div>
+                )
+            }
+
+        }
+
+        // rendu dans le DOM
+        ReactDOM.render(
+            <TestShallowMerge />,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+
+</html>

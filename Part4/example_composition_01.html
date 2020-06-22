@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        .heading {
+            color: purple;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        // la propriété children qui vous permet de faire de la composition
+        // mais vous pouvez également définir vos propres proprités pour passer des composants
+
+        const Hello = ({message}) => {
+
+            return (
+                <p>{message}</p>
+            )
+        }
+
+        const Widget = ({children, left}) => {
+
+            return (
+                <div className="container">
+                    <div className="sidebar">
+                        {left}
+                    </div>
+                    {children}
+                </div>
+            )
+        }
+
+        const App = () => {
+
+            return (
+                <Widget 
+                    left={ <Hello message="je suis à gauche" /> }
+                    >
+                    <h1>Hello tout le monde</h1>
+                    <Hello message="Hello world 1 !" />
+                    <Hello message="Hello world 2 !" />
+                    <Hello message="Hello world 3 !" />
+                    <Hello message="Hello world 4 !" />
+                    <footer>Je suis un copy left</footer>
+                </Widget>
+            )
+        }
+
+
+        ReactDOM.render(
+            <App />,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+
+</html>

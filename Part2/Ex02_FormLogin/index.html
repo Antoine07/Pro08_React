@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- permet de compiler le JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        .heading {
+            color: purple;
+        }
+
+        .valid {
+            font-size: small;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        class Login extends React.Component {
+            constructor(props) {
+                super(props);
+
+                this.state = {
+                    email: '',
+                    password: '',
+                    auth: false,
+                    error: false
+                }
+            }
+
+            handleChange = e => {
+                const { name, value } = e.target;
+
+                // permet de récupérer le nom de la clé error à false pour retirer les messages d'erreur
+                this.setState({ [name]: value, error : false });
+            }
+
+            handleSubmit = e => {
+                e.preventDefault();
+
+                const { email, password } = this.state;
+
+                if (email == 'admin@admin.fr' && password == '123') {
+                    this.setState({
+                        auth: true,
+                        error: false,
+                        email: '',
+                        password: ''
+                    });
+
+                    return;
+                }
+
+                this.setState({
+                    error: true,
+                    password : ''
+                });
+            }
+
+            render() {
+
+                const { email, password, auth, error } = this.state;
+                const valid = email != '' && password != '';
+
+                if(auth) 
+                    return (
+                        <p>Vous êtes bien connecté à l'admin</p>
+                    )
+
+                return (
+                    <React.Fragment>
+                    { error && <p> Il y a une erreur dans le formulaire de login/password</p> }
+                    <form onSubmit={this.handleSubmit}>
+                        <div className="form-group">
+                            <label htmlFor="email">Email address</label>
+                            <input name="email" value={email} onChange={this.handleChange}
+                                type="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="p">Password</label>
+                            <input name="password" value={password} onChange={this.handleChange} type="password" className="form-control" id="p" placeholder="Password" />
+                        </div>
+                        <button disabled={!valid} type="submit" className="btn btn-primary">Submit</button>
+                    </form>
+                    </React.Fragment>
+                );
+            }
+        }
+
+        class App extends React.Component {
+            constructor(props) {
+                super(props);
+            }
+            render() {
+                return (
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-12">
+                                <Login />
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+        }
+        ReactDOM.render(
+            <App />,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+
+</html>
