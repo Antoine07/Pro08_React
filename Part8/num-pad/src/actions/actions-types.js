@@ -3,7 +3,8 @@ import {
     INIT_MULTIPLICATIONS, 
     SEND_USER_CHOICE,
     RESET_NUMPAD,
-    RESTART
+    RESTART,
+    SET_MEMORY
  } from '../constants/actions';
 
 export const setNumber = payload => {
@@ -34,6 +35,12 @@ export const restart = () => {
 export const resetNumpad = () => {
     return { 
         type: RESET_NUMPAD 
+    }
+};
+
+export const setMemory = payload => {
+    return { 
+        type: SET_MEMORY, payload
     }
 };
 

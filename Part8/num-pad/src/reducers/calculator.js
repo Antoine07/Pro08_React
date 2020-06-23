@@ -1,6 +1,6 @@
 import { SET_NUMBER, INIT_MULTIPLICATIONS, SEND_USER_CHOICE, RESET_NUMPAD, RESTART } from '../constants/actions';
 
-import { multiplications, MAX_MULTIPLICATIONS} from '../actions/actions-types';
+import { multiplications, MAX_MULTIPLICATIONS } from '../actions/actions-types';
 
 const stateInit = {
     numbers: [],
@@ -10,7 +10,8 @@ const stateInit = {
     status: true,
     score: 0,
     step: 0,
-    total : MAX_MULTIPLICATIONS * MAX_MULTIPLICATIONS
+    total: MAX_MULTIPLICATIONS * MAX_MULTIPLICATIONS,
+    message :''
 }
 
 export default (state = stateInit, action = {}) => {
@@ -23,7 +24,8 @@ export default (state = stateInit, action = {}) => {
 
             return {
                 ...state,
-                numbers: []
+                numbers: [],
+                message : ''
             }
 
         case SET_NUMBER:
@@ -33,7 +35,8 @@ export default (state = stateInit, action = {}) => {
                 numbers: [
                     ...state.numbers,
                     action.payload,
-                ]
+                ],
+                message : ''
             }
 
         case RESTART:
@@ -54,18 +57,30 @@ export default (state = stateInit, action = {}) => {
 
         case SEND_USER_CHOICE:
 
+            if (state.numbers.length === 0) {
+
+                return {
+                    ...state,
+                    message: { content : "Attention votre champ est vide recommencer", type : "danger" }
+                }
+            }
+
             const userChoice = Number(state.numbers.join(''));
-            newMultiplications = [ ...state.multiplications ];
+
+            newMultiplications = [...state.multiplications];
             newMultiplication = newMultiplications.shift();
+
+            const success = userChoice === state.multiplication.num1 * state.multiplication.num2 ;
 
             if (state.step === 0) {
 
                 return {
                     ...state,
                     status: false,
-                    score: userChoice === state.multiplication.num1 * state.multiplication.num2 ? state.score + 1 : state.score,
+                    score: success ? state.score + 1 : state.score,
                     numbers: [],
-                    multiplications: newMultiplications
+                    multiplications: newMultiplications,
+                    message : success ? { content : "bravo", type : "success"} : { content : "raté", type : "danger" }
                 }
             }
 
@@ -75,7 +90,8 @@ export default (state = stateInit, action = {}) => {
                 score: userChoice === state.multiplication.num1 * state.multiplication.num2 ? state.score + 1 : state.score,
                 step: newMultiplications.length,
                 numbers: [],
-                multiplications: newMultiplications
+                multiplications: newMultiplications,
+                message : success ? { content : "bravo", type : "success"} : { content : "raté", type : "danger" }
             }
 
         default:
