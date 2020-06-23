@@ -1,11 +1,16 @@
-import { SET_NUMBER, INIT_MULTIPLICATIONS } from '../constants/actions';
+import { 
+    SET_NUMBER, 
+    INIT_MULTIPLICATIONS, 
+    SEND_USER_CHOICE,
+    RESET_NUMPAD,
+    RESTART
+ } from '../constants/actions';
 
 export const setNumber = payload => {
     return { 
         type: SET_NUMBER, payload 
     }
 };
-
 
 export const initMultiplications = () => {
     return { 
@@ -14,6 +19,24 @@ export const initMultiplications = () => {
 };
 
 
+export const sendUserChoice = () => {
+    return { 
+        type: SEND_USER_CHOICE 
+    }
+};
+
+export const restart = () => {
+    return { 
+        type: RESTART 
+    }
+};
+
+export const resetNumpad = () => {
+    return { 
+        type: RESET_NUMPAD 
+    }
+};
+
 // fonctions utiles
 export const shuffle = array => {
      array.sort(() => Math.random() - .5);
@@ -21,10 +44,12 @@ export const shuffle = array => {
      return array;
 }
 
-export const multiplications = (max = 9) => {
+export const MAX_MULTIPLICATIONS = 2 ;
+
+export const multiplications = () => {
     let propositions = [];
-    for(let i = 1; i < max + 1; i++){
-        for(let j = 1; j < max + 1; j++){
+    for(let i = 1; i < MAX_MULTIPLICATIONS + 1; i++){
+        for(let j = 1; j < MAX_MULTIPLICATIONS + 1; j++){
             propositions.push({num1 : i, num2 : j});
         }
     }

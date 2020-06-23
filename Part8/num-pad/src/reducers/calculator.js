@@ -1,17 +1,30 @@
-import { SET_NUMBER, INIT_MULTIPLICATIONS } from '../constants/actions';
+import { SET_NUMBER, INIT_MULTIPLICATIONS, SEND_USER_CHOICE, RESET_NUMPAD, RESTART } from '../constants/actions';
 
-import { multiplications } from '../actions/actions-types';
-
+import { multiplications, MAX_MULTIPLICATIONS} from '../actions/actions-types';
 
 const stateInit = {
     numbers: [],
-    numpad: [ ...Array(10).keys() ].slice(1).concat([0]),
-    multiplications : []
+    numpad: [...Array(10).keys()].slice(1).concat([0]),
+    multiplications: [],
+    multiplication: '',
+    status: true,
+    score: 0,
+    step: 0,
+    total : MAX_MULTIPLICATIONS * MAX_MULTIPLICATIONS
 }
 
 export default (state = stateInit, action = {}) => {
 
+    let newMultiplications, newMultiplication;
+
     switch (action.type) {
+
+        case RESET_NUMPAD:
+
+            return {
+                ...state,
+                numbers: []
+            }
 
         case SET_NUMBER:
 
@@ -23,13 +36,46 @@ export default (state = stateInit, action = {}) => {
                 ]
             }
 
+        case RESTART:
         case INIT_MULTIPLICATIONS:
 
-            console.log("multiplications")
+            newMultiplications = multiplications();
+            newMultiplication = newMultiplications.shift()
 
             return {
                 ...state,
-                multiplications : multiplications()
+                multiplications: newMultiplications,
+                multiplication: newMultiplication,
+                step: newMultiplications.length,
+                numbers: [],
+                score: 0,
+                status: true
+            }
+
+        case SEND_USER_CHOICE:
+
+            const userChoice = Number(state.numbers.join(''));
+            newMultiplications = [ ...state.multiplications ];
+            newMultiplication = newMultiplications.shift();
+
+            if (state.step === 0) {
+
+                return {
+                    ...state,
+                    status: false,
+                    score: userChoice === state.multiplication.num1 * state.multiplication.num2 ? state.score + 1 : state.score,
+                    numbers: [],
+                    multiplications: newMultiplications
+                }
+            }
+
+            return {
+                ...state,
+                multiplication: newMultiplication,
+                score: userChoice === state.multiplication.num1 * state.multiplication.num2 ? state.score + 1 : state.score,
+                step: newMultiplications.length,
+                numbers: [],
+                multiplications: newMultiplications
             }
 
         default:

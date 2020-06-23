@@ -1,2 +1,5 @@
 export const SET_NUMBER = 'SET_NUMBER';
 export const INIT_MULTIPLICATIONS = 'INIT_MULTIPLICATIONS';
+export const SEND_USER_CHOICE = 'SEND_USER_CHOICE';
+export const RESET_NUMPAD = 'RESET_NUMPAD';
+export const RESTART = 'RESTART';
