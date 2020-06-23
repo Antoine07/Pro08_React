@@ -27,17 +27,35 @@
             // Et dès que le state change.
             React.useEffect(() => {
                 setTimeout(() => {
-                    console.log(`First message: You clicked ${count} times`);
+                    console.log(`useEffect 1 ...: counter1 ${count} counter2 : ${count2}`);
                 }, 1000);
+                () => {
+                    console.log("hello je suis la fonction dite de nettoyage 1/3")
+                }
+            }, []); // tu watch rien du tout => exécuter au montage 
+
+            React.useEffect(() => {
+
+                setTimeout(() => {
+                    console.log(`useEffect 2First message: You clicked ${count} times  counter2 : ${count2}`);
+                }, 1000);
+
+                () => {
+                    console.log("hello je suis la fonction dite de nettoyage 2/3")
+                }
             });
 
             // Au montage la première fois.
             // Dès que le state change.
             React.useEffect(() => {
                 setTimeout(() => {
-                    console.log(`Second message: You clicked ${count} times`);
+                    console.log(`Second message: You clicked ${count} times  counter 2 : ${count2}`);
                 }, 1000);
-            });
+                () => {
+                    console.log("hello je suis la fonction dite de nettoyage 3/3")
+                }
+            }, [count2]); // watch le state count2
+
             return (
                 <div>
                     <p>You clicked {count} times 1</p>
@@ -52,6 +70,16 @@
                 </div>
             );
         }
+
+        let life = true ;
+        const timer = setTimeout(() => {
+                life = false;
+        }, 3000);
+
+        const By = () => <p>By</p>;
+
+        // todo un composant App 
+
         // rendu dans le DOM
         ReactDOM.render(
             <Counter />,
