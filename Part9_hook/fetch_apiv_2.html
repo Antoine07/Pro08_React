@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const container = document.getElementById('root');
+        const URL = 'https://jsonplaceholder.typicode.com/users';
+
+        // récupérer directement la clé dans les props passées à votre composant
+        const Users = ({ users }) => {
+
+            if ( users.length === 0)
+                return (
+                    <p>Pas de résultat</p>
+                )
+
+            return (
+                <ul>
+                    {users.map((user, k) => (
+                        <li key={k}>{user.name}</li>
+                    ))}
+                </ul>
+            )
+        }
+
+        const Search = () => {
+            const [word, setWord] = React.useState('');
+            const [search, setSearch] = React.useState([]);
+            const [loading, setLoading] = React.useState(true);
+
+            // Life Cycle 
+            React.useEffect(
+                () => {
+                    // la fonction async/await permet de gérer de manière synchrone un code asynchrone
+                    const fetchSearch = async (url, word) => {
+                        setLoading(true);
+                        // await attend la réponse du fetch
+                        const response = await fetch(url);
+                        // on attend encore que response.json() termine
+                        const data = await response.json();
+                        const sleep = await new Promise(resolve => setTimeout(resolve, 500));
+
+                        const regex = new RegExp('^' + word, 'i');
+
+                        setSearch(data.filter(user => user.name.match(regex)));
+                        setLoading(false);
+                    }
+
+                    // useEffect exécute la fonction
+                    if (word)
+                        fetchSearch(URL, word)
+
+                }, [word]
+            )
+
+            return (
+                <div className="search">
+                    <p>Saisie : {word}</p>
+                    <input type="text" value={word} onChange={e => setWord(e.target.value)} />
+
+                    { /* word && <p>Hello</p>  => Hello s'affiche que si word est non vide c'est à dire "vraie" 
+                    
+                    si word est null ou chaine de caractère de vide pour JS c'est faux donc il n'évalue la deuxième condition
+                    mais dès que je rempli word c'est considérer comme vrai dans la phrase logique et JS va interpréter la deuxième
+                    partie de cette condtion ici il va exécuté le code qui n'est pas faux donc ça s'affiche ...
+                    
+                    Par exemple ci-dessous vous êtes connceté est interprété
+                    let login = true
+                    login && "Vous êtes connecté"
+                    */ }
+
+                    { word &&
+                        <React.Fragment>
+                            <p>Votre recherche : </p>
+                            {loading ? <p>Loading ...</p> : <Users users={search} />}
+                        </React.Fragment>
+                    }
+                </div>
+            )
+        }
+
+        const App = () => {
+
+            return (
+                <React.Fragment>
+                    <p>Fetch search</p>
+                    <Search />
+                </React.Fragment>
+            );
+        }
+
+        ReactDOM.render(
+            <App />,
+            container
+        );
+    </script>
+</body>
+
+</html>
