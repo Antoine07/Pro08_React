@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Hello React</title>
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <!-- babel => compilation du JSX -->
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  <style>
+
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+
+    const initialState = {
+      result: 0,
+      number1: "",
+      number2: "",
+      hasError: false,
+      message: ''
+    };
+
+    function reducer(state, action) {
+
+      const { number1, number2 } = state;
+
+      switch (action.type) {
+     
+        case 'ADDITION':
+
+          if (state.number1 && state.number2)
+
+            return { ...state, result: number1 + number2, hasError: false }
+
+          return {
+            ...state, hasError: true, message : "Erreur, un ou les champs sont vides"
+          }
+
+        case 'MULTIPLICATION':
+
+          if (state.number1 && state.number2)
+
+            return { ...state, result: number1 * number2, hasError: false }
+
+          return {
+            ...state, hasError: true
+          }
+
+        case "number1":
+        case "number2":
+
+          const { type, value } = action;
+
+          if (value == "") return { ...state, [type]: "" }
+
+          if ( isNaN( parseInt(value) ) ) return { ...state, hasError: true, message : "Erreur de type numérique" }
+
+          return { 
+            ...state, 
+            [type]: parseInt(value), 
+            hasError: false, 
+            message : ""
+          }
+
+        case "RESET":
+          return { ...state, ...initialState }
+
+        default:
+          return state;
+      }
+    }
+
+    const Calculate = () => {
+
+      const [state, dispatch] = React.useReducer(reducer, initialState);
+      const { number1, number2, hasError, message } = state;
+
+      const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        dispatch({
+          type: `${name}`, value
+        })
+      }
+
+      const Message = ({message}) => hasError && <p>{message}</p>
+
+      return (
+        <React.Fragment>
+          <p>Calculatrice</p>
+          { hasError && <Message message={message} /> }
+          <label>Number 1
+                <input type="text" value={number1} name="number1" onChange={handleChange} />
+          </label>
+          <br />
+          <label>Number 2
+                <input type="text" value={number2} name="number2" onChange={handleChange} />
+          </label>
+          <p><button onClick={() => dispatch({ type: 'ADDITION' })}>+</button></p>
+          <p><button onClick={() => dispatch({ type: 'MULTIPLICATION' })}>x</button></p>
+          <p><button onClick={() => dispatch({ type: 'RESET' })}>Reset</button></p>
+          {state.result}
+        </React.Fragment>
+      );
+    }
+
+    ReactDOM.render(
+      <Calculate />
+      ,
+      document.getElementById('root')
+    );
+  </script>
+</body>
+
+</html>
