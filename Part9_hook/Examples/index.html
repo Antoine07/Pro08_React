@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        const container = document.getElementById('root');
+
+        const initialState = { count: 0 };
+
+        const reducer = (state, action) => {
+            switch (action.type) {
+
+                case 'INCREMENT':
+                    return {
+                        ...state,
+                        count: state.count + 1
+                    };
+
+                case 'DECREMENT':
+                    return {
+                        ...state,
+                        count: state.count - 1
+                    };
+
+                default:
+                    return state;
+            }
+        }
+
+        const Counter = () => {
+
+            // identique au state mais avec la possibilité de faire plus d'algo
+            const [state, dispatch] = React.useReducer(reducer, initialState);
+
+            return (
+                <React.Fragment>
+                    Counter : {state.count}
+                    <button onClick={() => dispatch({ type: 'DECREMENT' })}>-</button>
+                    <button onClick={() => dispatch({ type: 'INCREMENT' })}>+</button>
+                </React.Fragment>
+            );
+        }
+
+        ReactDOM.render(
+            <Counter />,
+            container
+        );
+    </script>
+</body>
+
+</html>
