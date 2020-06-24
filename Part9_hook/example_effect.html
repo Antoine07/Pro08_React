@@ -23,6 +23,10 @@
             const [count, setCount] = React.useState(0);
             const [count2, setCount2] = React.useState(0);
 
+            let myVa = 10;
+
+            setInterval(() => { myVa++; console.log(myVa) } , 500)
+
             // Au montage la première fois.
             // Et dès que le state change.
             React.useEffect(() => {
@@ -65,6 +69,8 @@
                 <div>
                     <p>You clicked {count} times 1</p>
                     <p>You clicked {count2} times 2</p>
+                    <p>MyVa : {myVa}</p>
+                    
 
                     <button onClick={() => setCount(count + 1)}>
                         Click me 1

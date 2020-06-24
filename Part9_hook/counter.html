@@ -17,53 +17,60 @@
     <div id="root"></div>
     <script type="text/babel">
 
+        // une valeur globale
         let timer = null;
 
-        // Fonction qui défnit un composant
-        const Counter = props => {
-
-            // variable mutable == state useState Hook
+        const Counter = () => {
             const [ count, setCount ] = React.useState(0);
             const [ active, setActive ] = React.useState(false);
 
             const start = () => {
 
-                if( active === false ){
-                    timer = setInterval(() => {
-                        // 1. solution 
-                        // setCount(count => count + 1);
-                        // 2. forcer la mise à jour en regardans l'état précédent
-                        // forcer React a récupérer l'état précédent
-                        setCount(count => count + 1);
-                        console.log(count, 'lecture locale de la valeur count');
-                    }, 1000);
+                setActive(true);
 
-                    setActive(true);
-                }
-                else{
-                    clearInterval(timer);
-                    setActive(false);
-                }
+                // 1. La première solution pour le setCount
+                // ne marche pas car au début du lancement
+                // la closure de setInterval a accés à count qui vaut 0
+                // la fonction start n'étant pas appelée une deuxième fois
+                timer = setInterval(() => {
+                    // 1. solution 
+                    // setCount(count => count + 1);
+                    // 2. forcer la mise à jour en regardans l'état précédent
+                    // forcer React a récupérer l'état précédent
+                    setCount(count => count + 1);
+                }, 1000);
             }
 
-            // Life cycle useEffect Hook
+            const stop = () => {
+                setActive(false);
+                clearInterval(timer);
+            }
+
+            const reset = () => {
+                setActive(false);
+                clearInterval(timer);
+                setCount(0);
+            }
+
             React.useEffect(() => {
 
-                console.log('wath le count ...', count);
+                // code qui va s'exécuter au montage uniquement (rien n'est watche state)
 
+                // et au démontage uniquement
                 return () => {
-                    clearInterval(timer);
+                    clearInterval(timer); // clean API
                     console.log('unmount ....')
                 }
 
-            }, []); // rien n'est watch au niveau des states
+            }, []); 
 
-            console.log('count', count, Math.random());
 
             return (
                 <React.Fragment>
                     <div>Counter : {count}</div>
-                    <p><button onClick={start}>Start/stop</button></p>
+                    <p><button disabled={active} onClick={start}>Start</button></p>
+                    <p><button disabled={!active} onClick={stop}>Stop</button></p>
+                    { count > 1  &&  <p><button onClick={reset}>Reset</button></p> }
                 </React.Fragment>
             );
         }
@@ -74,7 +81,6 @@
 
             return (
                 <div>
-                { display ? 'yes' : 'no '}
                   <p><button onClick={() => setDisplay(!display)}>Toggle counter</button></p>
                   {display && <Counter />}
                 </div>
