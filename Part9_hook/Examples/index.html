@@ -17,21 +17,41 @@
 
         const container = document.getElementById('root');
 
-        const initialState = { count: 0 };
+        const initialState = { count: 0, message: '', number: '' };
 
         const reducer = (state, action) => {
             switch (action.type) {
 
-                case 'INCREMENT':
+                case 'SET_NUMBER':
+
                     return {
                         ...state,
-                        count: state.count + 1
+                        number : action.number
+                    };
+
+
+                case 'INCREMENT':
+
+                    return {
+                        ...state,
+                        count: state.count + 1,
+                        message: ''
                     };
 
                 case 'DECREMENT':
+
+                    if (state.count === 0) {
+
+                        return {
+                            ...state,
+                            message: "Décrementation négative interdite"
+                        }
+                    }
+
                     return {
                         ...state,
-                        count: state.count - 1
+                        count: state.count - 1,
+                        message: ''
                     };
 
                 default:
@@ -44,11 +64,16 @@
             // identique au state mais avec la possibilité de faire plus d'algo
             const [state, dispatch] = React.useReducer(reducer, initialState);
 
+            const { count, message, number } = state;
+
             return (
                 <React.Fragment>
-                    Counter : {state.count}
+                    {message && <p>{message}</p>}
+                    Counter : {count}
                     <button onClick={() => dispatch({ type: 'DECREMENT' })}>-</button>
                     <button onClick={() => dispatch({ type: 'INCREMENT' })}>+</button>
+                    <p><input type="text" value={number} onChange={e => dispatch({ type: 'SET_NUMBER', number: e.target.value })} /> </p>
+                    <p>{number}</p>
                 </React.Fragment>
             );
         }
