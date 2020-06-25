@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const container = document.getElementById('root');
+        const MAX_NOTE = 2; // variable d'environement de l'application
+        const initialState = {
+            notes: [],
+            message: '',
+            note: '',
+            coefficient: 1,
+            average: '',
+            total: 0
+        };
+
+        const reducer = (state, action) => {
+
+            switch (action.type) {
+
+                case 'ADD_NOTES':
+
+                    if (state.note === '') return { ...state, message: "Attention votre champ note est vide" }
+                    if (state.coefficient === '') return { ...state, message: "Attention votre champ coefficient est vide" }
+
+                    const notesCoeff = [...state.notes, { noteWithoutCoeff: state.note, note: state.note * state.coefficient, coefficient: state.coefficient }];
+                    const total = state.total + state.coefficient;
+
+                    console.log(total)
+
+                    const average = Math.round(10 * (notesCoeff.map(nc => nc.note).reduce((acc, curr) => (acc + curr)) / total)) / 10;
+
+                    return {
+                        ...state,
+                        notes: notesCoeff,
+                        note: '',
+                        coefficient: 1,
+                        average: average,
+                        total: state.total + state.coefficient
+                    }
+
+                case 'ADD_NOTE':
+
+                    if (action.note === '') return { ...state, note: '' };
+
+                    if (isNaN(parseInt(action.note))) {
+
+                        return {
+                            ...state,
+                            message: "attention ce n'est pas un numérique",
+                            note: ''
+                        }
+                    }
+
+                    if ((action.note > -1 && action.note < 21) === false) {
+                        return {
+                            ...state,
+                            message: `La note ${action.note} ne marche pas car elle doit être comprise entre 0 et 20`
+                        }
+                    }
+
+                    return { ...state, note: parseInt(action.note), message: '' }
+
+                case 'RESET':
+
+                    return {
+                        ...state,
+                        notes: [],
+                        message: 'Reset notes',
+                        note: '',
+                        coefficient: 1,
+                        average: '',
+                        total: 0
+                    }
+
+                case 'ADD_COEFFICIENT':
+
+                    if (action.coefficient === '') return { ...state, coefficient: '' };
+
+                    if (isNaN(parseInt(action.coefficient))) {
+
+                        return {
+                            ...state,
+                            message: "attention ce n'est pas un numérique",
+                            coefficient: ''
+                        }
+                    }
+
+                    if ((action.coefficient > -1 && action.coefficient < 5) === false) {
+                        return {
+                            ...state,
+                            message: `La note ${action.coefficient} ne marche pas car elle doit être comprise entre 0 et 5`
+                        }
+                    }
+
+                    return { ...state, coefficient: parseInt(action.coefficient), message: '' }
+
+                default:
+                    return state;
+            }
+        }
+
+        const Results = ({ notes, reset, total, average }) => (
+            <React.Fragment>
+                <p>Moyenne : {average} </p>
+                <ul>{notes.map((note, k) => (
+                    <li key={k}>{note.noteWithoutCoeff} coefficient : {note.coefficient} </li>
+                ))}
+                </ul>
+                {total === MAX_NOTE &&
+                    <button onClick={reset} className="btn btn-primary">Reset</button>
+                }
+            </React.Fragment>
+        );
+
+        const Form = props => {
+            
+        }
+
+        const App = () => {
+
+            // React solution pour de l'algo dans un state
+            // si le state devient complexe => on définit un useState permettant de factoriser la logique algorithmique
+            const [state, dispatch] = React.useReducer(reducer, initialState);
+            const { note, notes, message, coefficient, average } = state;
+
+            const handleSubmit = e => {
+                e.preventDefault();
+
+                dispatch({ type: 'ADD_NOTES' });
+            }
+
+            return (
+                <React.Fragment>
+                    {message && <p>{message}</p>}
+                    {notes.length === MAX_NOTE && <p>Le total des notes est atteint </p>}
+                    {notes.length < MAX_NOTE &&
+                        <React.Fragment>
+                            <p>Saisie de notes maximun : {MAX_NOTE}</p>
+                            <form onSubmit={handleSubmit}>
+                                <div className="form-group">
+                                    <label>Saisir une note</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={note}
+                                        onChange={e => dispatch({ type: 'ADD_NOTE', note: e.target.value })}
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>Coefficient</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={coefficient}
+                                        onChange={e => dispatch({ type: 'ADD_COEFFICIENT', coefficient: e.target.value })}
+                                    />
+                                </div>
+                                <button type="submit" className="btn btn-primary">Ajouter</button>
+                            </form>
+                        </React.Fragment>
+                    }
+                    {notes.length > 0 && <Results
+                        notes={notes}
+                        reset={() => dispatch({ type: 'RESET' })}
+                        total={notes.length}
+                        average={average}
+                    />}
+                </React.Fragment>
+            );
+        }
+
+        ReactDOM.render(
+            <App />,
+            container
+        );
+    </script>
+</body>
+
+</html>
