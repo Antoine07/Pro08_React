@@ -46,11 +46,22 @@ SAV
             )
         }
 
+        const Posts = props => {
+            // on récupère le contexte API pour consommation
+            const posts = useContext(ExampleContext);
+
+            return (
+                <p>posts</p>
+            )
+        }
 
         const App = () => {
 
+            // contextualise 
             return(
-                <p>Hello</p>
+                <ExampleProvider>
+                    <Posts />
+                </ExampleProvider>
             )
         }
 
