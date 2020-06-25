@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        const container = document.getElementById('root');
+        const StudentContext = React.createContext();
+        const Dataset =
+            [
+                { id: 1, name: "Alice", lessons: [1, 2], attendance: 1 },
+                { id: 2, name: "Alan", lessons: [3], attendance: 5 },
+                { id: 3, name: "Phil", lessons: [1, 2, 3], attendance: 9 },
+                { id: 4, name: "Naoudi", lessons: [1], attendance: 3 },
+                { id: 5, name: "Fenley", lessons: [3], attendance: 5 },
+            ];
+
+        const initState = {
+            students: [],
+            student: '',
+            message: ''
+        }
+        const reducer = (state, action) => {
+            switch (action.type) {
+
+                case 'SET_STUDENT':
+
+                    return {
+                        ...state,
+                        student: action.student.trim(),
+                        message: ""
+                    }
+
+                case 'ADD_STUDENT':
+
+                    if (state.student === '') return { ...state, message: "Attention votre champ est vide" }
+
+                    if( state.students.filter( student => student.name === state.student ).length > 0 )
+                    return { ...state, message: `Attention ${state.student} existe déjà dans la liste` }
+
+                    return {
+                        ...state,
+                        students: [...state.students, { id : Math.random().toString(24) , name : state.student } ],
+                        message: "",
+                        student : ""
+                    }
+
+                case 'INIT_STUDENTS':
+
+                    return {
+                        ...state,
+                        students: action.students
+                    }
+
+                default:
+                    return state;
+            }
+        }
+
+        const StudentProvider = ({ children }) => {
+            // const [ posts, setPosts ] = React.useState([]);
+            const [state, dispatch] = React.useReducer(reducer, initState);
+
+            React.useEffect(() => {
+
+                dispatch({ type: 'INIT_STUDENTS', students: Dataset })
+                // setPosts()
+            }, []);
+
+            return (
+                <StudentContext.Provider value={[state, dispatch]}>
+                    {children}
+                </StudentContext.Provider>
+            )
+        }
+
+        const Students = () => {
+            // on récupère le contexte API pour consommation
+            const [state, dispatch] = React.useContext(StudentContext);
+            const { students, message, student } = state;
+
+            const handleSubmit = e => {
+                e.preventDefault();
+
+                dispatch({ type: 'ADD_STUDENT' });
+            }
+
+            return (
+                <React.Fragment>
+                    { message && <p>{message} </p>}
+                    <p>Students</p>
+                    {students.map((student, i) => <p key={i} > {student.name}</p>)}
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-group">
+                            <label>Add student</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                value={student}
+                                onChange={e => dispatch({ type: 'SET_STUDENT', student: e.target.value })}
+                            />
+                        </div>
+                        <button type="submit" className="btn btn-primary">Ajouter</button>
+                    </form>
+                </React.Fragment>
+            )
+        }
+
+        const App = () => {
+
+            // contextualise 
+            return (
+                <StudentProvider>
+                    <Students />
+                </StudentProvider>
+            )
+        }
+
+        ReactDOM.render(
+            <App />,
+            container
+        );
+    </script>
+</body>
+
+</html>
