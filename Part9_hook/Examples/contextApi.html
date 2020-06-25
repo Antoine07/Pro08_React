@@ -46,7 +46,10 @@
             const posts = React.useContext(ExampleContext);
 
             return (
-                <p>posts</p>
+                <React.Fragment>
+                    <p>posts</p>
+                    {posts.map((post, i) => <p key={i} > {post.title}</p>)}
+                </React.Fragment>
             )
         }
 
