@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        const container = document.getElementById('root');
+        const ExampleContext = React.createContext();
+
+
+        const initState = {
+            posts : []
+        }
+        const reducer = (state, action) => {
+            switch(action.type){
+
+                case 'INIT_POSTS':
+
+                    return {
+                        ...state,
+                        posts : action.posts
+                    }
+
+                default:
+                    return state;
+            }
+        }
+
+        const ExampleProvider = ({children}) => {
+            // const [ posts, setPosts ] = React.useState([]);
+            const [state, dispatch] = React.useReducer(reducer, initState);
+
+            React.useEffect(() => {
+
+                const posts = [
+                    {
+                        title : "hello1"
+                    },
+                    {
+                        title : "hello2"
+                    },
+                    { 
+                        title : "hello3"
+                    },
+                    { 
+                        title : "hello4"
+                    }
+                ]
+
+                dispatch({ type : 'INIT_POSTS', posts : posts} )
+                // setPosts()
+            }, []);
+
+            return (
+                <ExampleContext.Provider value={ [state, dispatch] }>
+                    {children}
+                </ExampleContext.Provider>
+            )
+        }
+
+        const Posts = props => {
+            // on récupère le contexte API pour consommation
+            const [ state, disptach ] = React.useContext(ExampleContext);
+
+            return (
+                <React.Fragment>
+                    <p>posts</p>
+                    {state.posts.map((post, i) => <p key={i} > {post.title}</p>)}
+                    
+                </React.Fragment>
+            )
+        }
+
+        const App = () => {
+
+            // contextualise 
+            return(
+                <ExampleProvider>
+                    <Posts />
+                </ExampleProvider>
+            )
+        }
+
+        ReactDOM.render(
+            <App />,
+            container
+        );
+    </script>
+</body>
+
+</html>
