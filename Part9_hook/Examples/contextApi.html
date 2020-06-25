@@ -19,13 +19,28 @@ SAV
         const ExampleContext = React.createContext();
 
         const reducer = () => {
-            
+
         }
 
         const ExampleProvider = ({children}) => {
+            const [ posts, setPosts ] = React.useState([]);
+
+            React.useEffect(() => {
+                setPosts([
+                    {
+                        title : "hello1"
+                    },
+                    {
+                        title : "hello2"
+                    },
+                    { 
+                        title : "hello3"
+                    }
+                ])
+            }, []);
 
             return (
-                <ExampleContext.Provider value={}>
+                <ExampleContext.Provider value={posts}>
                     {children}
                 </ExampleContext.Provider>
             )
