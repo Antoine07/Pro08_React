@@ -11,18 +11,17 @@ const Denomination = () => {
     // on récupère le contexte API pour consommation
     const [state, dispatch] = useContext(DenominationContext);
 
-    const { amount, tokens } = state;
+    const { amount, tokens, option, denominations } = state;
 
     const handleSubmit = e => {
         e.preventDefault();
-
         dispatch({ type: 'CALCUL_TOKENS' })
     }
-
 
     return (
         <div className="Denomination">
             <h2>Rentrez votre montant </h2>
+            <p>Vous utilisez les tokens suivants : {[ ...denominations.get(option).values() ].join(" ")}</p>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label>Amount</label>
@@ -30,7 +29,10 @@ const Denomination = () => {
                         type="text"
                         className="form-control"
                         value={amount}
-                        onChange={e => dispatch({ type: 'SET_AMOUNT', amount: e.target.value })}
+                        onChange={e => dispatch({
+                            type: 'SET_AMOUNT',
+                            amount: e.target.value
+                        })}
                     />
                 </div>
                 <button type="submit" className="btn btn-primary">Ajouter</button>

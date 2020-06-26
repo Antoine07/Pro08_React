@@ -6,10 +6,10 @@ import {
 
 import { DenominationContext } from '../DenominationProvider';
 
-const Configuration = (props) => {
+const Configuration = () => {
     const [state, dispatch] = useContext(DenominationContext);
-    const { option } = state;
-
+    const { option, denominations } = state;
+    
     const [redirect, setRedirect] = useState(false);
 
     const handleSubmit = e => {
@@ -17,12 +17,15 @@ const Configuration = (props) => {
         setRedirect(true);
     }
 
-    if (redirect) return (
+    if ( redirect ) return (
         <Redirect to="/" />
     )
 
     return (
         <div className="Configuration">
+            { [ ...denominations.keys() ].map((k, i) => 
+                <p key={i}> Dénomination {i+1} <br /> { [ ...denominations.get(k).values() ].join(" ") }</p>
+            ) }
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label>Configuration</label>
@@ -30,7 +33,8 @@ const Configuration = (props) => {
                         Choix de la dénomination :
                         <select value={option} onChange={e =>
                             dispatch({
-                                type: 'SET_OPTION', option: option
+                                type: 'SET_OPTION', 
+                                option: e.target.value
                             })}>
                             <option value="denomination_1">Dénomination 1</option>
                             <option value="denomination_2">Dénomination 2</option>

@@ -16,12 +16,12 @@ export const reducer = (state = initialState, action = {}) => {
     switch ( action.type ) {
 
         case 'SET_OPTION':
-
             if (action.option)
 
                 return {
                     ...state,
-                    option: action.amount
+                    option: action.option,
+                    tokens : new Map()
                 }
 
         case 'SET_AMOUNT':
