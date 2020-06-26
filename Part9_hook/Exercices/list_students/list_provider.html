@@ -69,9 +69,13 @@
                     const newStudents = state.students.map(student => {
 
                         if (student.id == action.id) {
-                            student.name = student.name.split("").sort(_ => Math.random() - .5).join("");
+                            student.name = student.name.split('').sort(_ => Math.random() - .5).join('');
 
-                            if (student.name === student.oldName) {
+                            // le jeu pour savoir si on retombe sur le nom
+                            if ( student.name === student.oldName ) {
+                                // on regarde si la clé existe dans le map si c'est vrai on incrémente + 1 le score
+                                // sinon on crée une clé unique et on initialise le score à 1
+                                // Les Map sont plus optimaux dans la recherche des valeurs dans la structure de données elle-même
                                 if (state.score.has(student.id))
                                     state.score.set(student.id, state.score.get(student.id) + 1);
                                 else
