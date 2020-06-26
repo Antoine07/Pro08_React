@@ -5,9 +5,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
-  useParams,
-  Redirect
+  Link
 } from "react-router-dom";
 
 import Denomination from './components/Denomination';
@@ -35,7 +33,7 @@ const App = () => {
           <Route exact path="/">
             <Denomination />
           </Route>
-          <Route exact path="/post">
+          <Route exact path="/configuration">
             <Configuration />
           </Route>
         </Switch>

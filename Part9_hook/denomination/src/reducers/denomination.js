@@ -1,14 +1,28 @@
 // source de vérité
 export const initialState = {
-    denominations: [100, 50, 20, 10, 5, 1],
     tokens: new Map(),
     amount: '',
-    message: ''
+    message: '',
+    denominations: new Map(
+        [
+            ['denomination_1', [10, 5, 3, 2, 1]],
+            ['denomination_2', [100, 50, 20, 10, 5, 1]]
+        ]),
+    option: 'denomination_1'
 }
 
 export const reducer = (state = initialState, action = {}) => {
 
-    switch (action.type) {
+    switch ( action.type ) {
+
+        case 'SET_OPTION':
+
+            if (action.option)
+
+                return {
+                    ...state,
+                    option: action.amount
+                }
 
         case 'SET_AMOUNT':
 
@@ -27,7 +41,7 @@ export const reducer = (state = initialState, action = {}) => {
 
         case 'CALCUL_TOKENS':
 
-            if ( state.amount === '' )
+            if (state.amount === '')
                 return {
                     ...state,
                     message: "votre champ est vide recommencer"
@@ -56,8 +70,8 @@ export const reducer = (state = initialState, action = {}) => {
 
             // Algo 2
             let q;
-            for (const d of state.denominations) {
-                if ( amount >= d ) {
+            for (const d of state.denominations.get(state.option)) {
+                if (amount >= d) {
                     q = Math.floor(amount / d);
                     state.tokens.set(d, q);
                     amount = amount % d;

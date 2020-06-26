@@ -4,18 +4,20 @@ import { DenominationContext } from '../DenominationProvider';
 
 import Tokens from './Tokens';
 
+
+
 const Denomination = () => {
 
-     // on récupère le contexte API pour consommation
-     const [state, dispatch] = useContext(DenominationContext);
+    // on récupère le contexte API pour consommation
+    const [state, dispatch] = useContext(DenominationContext);
 
-     const { amount, tokens } = state;
+    const { amount, tokens } = state;
 
-     const handleSubmit = e => {
-         e.preventDefault();
+    const handleSubmit = e => {
+        e.preventDefault();
 
-         dispatch({ type : 'CALCUL_TOKENS'})
-     }
+        dispatch({ type: 'CALCUL_TOKENS' })
+    }
 
 
     return (
@@ -28,13 +30,13 @@ const Denomination = () => {
                         type="text"
                         className="form-control"
                         value={amount}
-                        onChange={e => dispatch({ type: 'SET_AMOUNT', amount : e.target.value })}
+                        onChange={e => dispatch({ type: 'SET_AMOUNT', amount: e.target.value })}
                     />
                 </div>
                 <button type="submit" className="btn btn-primary">Ajouter</button>
             </form>
             {/* size donne la dimension de votre Map JS nombre d'élément(s)  */}
-            { tokens.size > 0 &&  <Tokens tokens = {tokens} />}
+            {tokens.size > 0 && <Tokens tokens={tokens} />}
         </div>
     );
 }
