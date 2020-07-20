@@ -417,13 +417,13 @@ Ce composant fait partie des composants principaux de React Native. Il vous perm
 
 Utilisez pour l'instant snack.expo pour faire l'exercice [sandbox](https://snack.expo.io/)
 
-Créez un champ centré permettant de saisir une chaine de caractères. Affichez le nombre de caractères saisis en dessus du champ, à chaque fois qu'il y a un espace compter le nombre de caractères par mot et affichez le :
+Créez un champ centré permettant de saisir une chaîne de caractères et d'afficher le nombre de lettre(s) par mot saisi, les espaces ne seront pas comptés :
 
 [ Hello World !]
 
 5 5 1
 
-Indications la méthode onChangeText permet de récupérer la saisi d'un texte dans la balise TextInput. L'attribut defaultValue pour sa part permet d'afficher la siasi. Avec 
+Indications : la méthode onChangeText permet de récupérer la saisi d'un texte dans la balise TextInput. L'attribut defaultValue pour sa part permet d'afficher son contenu par exemple : 
 
 ```js
 <TextInput onChangeText={() => ()} defaultValue={value} />
