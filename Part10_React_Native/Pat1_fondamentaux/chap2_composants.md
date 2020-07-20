@@ -423,6 +423,12 @@ Créez un champ centré permettant de saisir une chaine de caractères. Affichez
 
 5 5 1
 
+Indications la méthode onChangeText permet de récupérer la saisi d'un texte dans la balise TextInput. L'attribut defaultValue pour sa part permet d'afficher la siasi. Avec 
+
+```js
+<TextInput onChangeText={() => ()} defaultValue={value} />
+```
+
 ### Exercice votes 
 
 Développez l'application votes suivante, vous pouvez utiliser snack.expo. Il y a 4 couples de candidats, à chaque fois l'utilisateur doit voter pour un candidat. Une fois tous les votes effectués on affichera les résultats sur une "page" différente. Un bouton reset est prévu pour réinitialiser les votes. Utilisez l'approche fonctionnelle de React ainsi que le Hook **useReducer** pour réaliser cet exercice. Faites deux composants : App et Favorite. Vous pouvez gérer, pour l'instant, le développement de ces deux composants dans le même fichier App.js.
