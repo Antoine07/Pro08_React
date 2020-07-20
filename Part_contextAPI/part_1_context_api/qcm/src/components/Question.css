@@ -1,0 +1,24 @@
+.Question {
+  font-size: 0.8rem;
+}
+
+.Question-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.Question-link {
+  color: #61dafb;
+}
+
+.Question-title{
+  font-size: 0.8rem;  text-align: center;
+}
+
+.Question-form-check-label{ font-size: 0.8rem;}
