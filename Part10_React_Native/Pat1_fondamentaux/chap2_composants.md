@@ -426,7 +426,7 @@ Créez un champ centré permettant de saisir une chaîne de caractères et d'aff
 Indications : la méthode onChangeText permet de récupérer la saisi d'un texte dans la balise TextInput. L'attribut defaultValue pour sa part permet d'afficher son contenu par exemple : 
 
 ```js
-<TextInput onChangeText={() => ()} defaultValue={value} />
+<TextInput onChangeText={(v) => (v)} defaultValue={value} />
 ```
 
 ### Exercice votes 
