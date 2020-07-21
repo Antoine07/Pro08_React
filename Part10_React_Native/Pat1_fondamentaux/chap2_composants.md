@@ -526,11 +526,10 @@ expo init school
 
 ```bash
 npm install @react-navigation/native @react-navigation/stack
-expo install react-native-gesture-handler react-native-reanimated
-react-native-screens react-native-safe-area-context 
-@react-native-community/masked-view
+expo install react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-community/masked-view
 
-npm install react-native-reanimated react-native-gesture-handler react-native-screens react-native-safe-area-context @react-native-community/masked-view
+// n'installez pas cette partie on verra plus tard ...
+// npm install react-native-reanimated react-native-gesture-handler react-native-screens react-native-safe-area-context @react-native-community/masked-view
 ```
 
 ### Navigation
