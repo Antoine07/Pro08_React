@@ -1,17 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Text,
   View,
   TouchableOpacity,
 } from 'react-native';
 
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
+import styles from '../styles';
 
 const HomeScreen = ({ navigation }) => {
-  const store = useSelector( state => state);
+  // Hook qui permet d'accéder à un store du combine reducer facilement à l'aide de sa clé (voir dans combineReducers pour les clés)
+  const store = useSelector( state => state.juniper);
+  const dispatch = useDispatch();
 
-  console.log(store)
+  useEffect(() => {
+
+    console.log(store.numbers)
+
+  }, [store.numbers])
 
   return (
     <View style={styles.container}>
@@ -25,6 +32,11 @@ const HomeScreen = ({ navigation }) => {
         style={styles.buttonContainer}
         onPress={() => navigation.navigate('Score')}>
         <Text style={styles.buttonText}>Score</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.buttonContainer}
+        onPress={() => dispatch({ type : 'NUMBERS' })}>
+        <Text style={styles.buttonText}>Test dispatc</Text>
       </TouchableOpacity>
     </View>
   )

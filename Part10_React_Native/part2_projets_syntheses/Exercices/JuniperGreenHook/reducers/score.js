@@ -1,6 +1,8 @@
 // import { } from './constants/actions';
 
-const initialState = {}
+const initialState = {
+    scores  : []
+}
 
 export default (state= initialState, action = {}) => {
 
