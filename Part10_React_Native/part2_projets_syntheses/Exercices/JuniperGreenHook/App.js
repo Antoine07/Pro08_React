@@ -6,14 +6,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './reducers/index';
+
+import { useSelector, useDispatch } from 'react-redux';
  
 import HomeScreen from './screens/HomeScreen' ;
 import GameScreen from './screens/GameScreen' ;
 import ScoreScreen from './screens/ScoreScreen' ;
 
-const store = createStore(
-  reducer
-);
+const store = createStore(reducer);
 
 const Stack = createStackNavigator();
 

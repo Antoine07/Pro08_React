@@ -5,8 +5,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
 
+import { initGame } from '../actions/actions-types';
 import styles from '../styles';
 
 const HomeScreen = ({ navigation }) => {
@@ -17,6 +18,8 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
 
     console.log(store.numbers)
+
+    dispatch(initGame());
 
   }, [store.numbers])
 
