@@ -1,4 +1,4 @@
-const { priceTTC } = require('../priceTTC');
+const { priceTTC, priceHT_TTC } = require('../priceTTC');
 
 // Permet de faire un bloque de tests
 describe("test du module priceTTC", () => {
@@ -29,4 +29,14 @@ describe("test du module priceTTC", () => {
         for (let price of resultHT_TTC)
             expect(priceTTC(price.ht)).toBe(price.ttc);
     });
+
+    test("test : priceHT_TTC", () => {
+        for (const price of resultHT_TTC){
+            expect(priceHT_TTC(price.ht)).toEqual({ 
+                priceHT : price.ht , 
+                priceTTC : price.ttc 
+            });
+        }
+    });
+
 });

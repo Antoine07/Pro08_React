@@ -2,11 +2,19 @@
 
 const priceTTC = (price, tva = .2) => {
 
-    if ( isNaN(price) === true ||  isNaN(tva) === true ) throw "Price is not a number";
+    if (isNaN(price) === true || isNaN(tva) === true) throw "Price is not a number";
 
-    return  Math.floor( price * (1 + tva) * 10 ) / 10 ;
+    return Math.floor(price * (1 + tva) * 10) / 10;
+}
+
+const priceHT_TTC = (price, tva = .2) => {
+
+    if (isNaN(price) === true || isNaN(tva) === true) throw "Price is not a number";
+
+    return { priceHT: price, priceTTC: Math.floor(price * (1 + tva) * 10) / 10 };
 }
 
 module.exports = {
-    priceTTC: priceTTC
+    priceTTC: priceTTC,
+    priceHT_TTC: priceHT_TTC
 }
