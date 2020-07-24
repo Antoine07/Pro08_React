@@ -1,0 +1,12 @@
+
+
+const priceTTC = (price, tva = .2) => {
+
+    if ( isNaN(price) === true ||  isNaN(tva) === true ) throw "Price is not a number";
+
+    return  Math.floor( price * (1 + tva) * 10 ) / 10 ;
+}
+
+module.exports = {
+    priceTTC: priceTTC
+}
