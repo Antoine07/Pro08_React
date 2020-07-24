@@ -36,6 +36,8 @@ Dans l'idéal on écrit les tests avant d'écrire le code de l'application ou l'
 
 Les tests sont là pour rendre plus sûre l'application et améliorent la connaissance de l'expérience utilisateur. Ils évitent les bugs et permettent de les corriger plus rapidement. Notons également que lorsque le code évolue, l'application est alors re-testée avec les nouvelles "features". Il arrive alors que des bugs apparaîssent, c'est ce que l'on appelle des régressions. Si l'application est largement testée alors il sera plus facile de les corriger.
 
+On dit qu'une application est sûr, si elle est couverte à 80% de tests.
+
 ## Jest
 
 C'est une librairie qui permet de faire des tests et d'accéder au DOM à l'aide de jsdom (simulation partielle d'un navigateur). Intégré dans React, il permet de simuler des API et d'isoler des modules ou des horloges.
