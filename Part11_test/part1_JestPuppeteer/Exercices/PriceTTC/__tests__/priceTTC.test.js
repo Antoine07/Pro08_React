@@ -9,9 +9,9 @@ describe("test du module priceTTC", () => {
     // pour avoir toujours des variables nettoyées
     beforeEach(() => {
         for (let price of [11, 18, 29, 30, 45, 119]) {
-            resultHT_TTC.push({ ht: price, ttc: Math.floor( price * 1.2 * 10) / 10 });
+            resultHT_TTC.push({ ht: price, ttc: Math.floor(price * 1.2 * 10) / 10 });
         }
-       // console.log(resultHT_TTC)
+        // console.log(resultHT_TTC)
     });
 
     // après chaque test on remet à jour les variables utilisées
@@ -31,12 +31,20 @@ describe("test du module priceTTC", () => {
     });
 
     test("test : priceHT_TTC", () => {
-        for (const price of resultHT_TTC){
-            expect(priceHT_TTC(price.ht)).toEqual({ 
-                priceHT : price.ht , 
-                priceTTC : price.ttc 
+        for (const price of resultHT_TTC) {
+            expect(priceHT_TTC(price.ht)).toEqual({
+                priceHT: price.ht,
+                priceTTC: price.ttc
             });
         }
     });
+
+    test("test excpetion", () => {
+        expect(() => priceTTC("Hello World")).toThrow("Price is not a number");
+    });
+
+    test("test excpetion", () => {
+        expect(() => priceTTC("19")).toThrow("Price is not a number");
+    })
 
 });
