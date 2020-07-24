@@ -171,7 +171,7 @@ Vous pouvez tester si dans une chaîne de caractères il y a un certain pattern 
 
 ```js
 expect('Alan').toMatch(/lan/); // Le test passe
-expect('team').not.toMatch(/I/); // Le test passe
+expect('team').not.toMatch(/I/); // le test ne passe pas
 ```
 
 Une autre méthode intéressante est la méthode toContain qui permet de tester la présence d'un pattern dans un itérable :
