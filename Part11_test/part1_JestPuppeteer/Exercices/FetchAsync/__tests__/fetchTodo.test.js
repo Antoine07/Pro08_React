@@ -1,4 +1,4 @@
-const fetchTodo = require('../fetchTodo');
+const { fetchTodo, parity } = require('../fetchTodo');
 
 describe("Fetch todo", () => {
 
@@ -13,5 +13,29 @@ describe("Fetch todo", () => {
         expect(json.title).toBe(user.title);
 
         expect(user).toEqual(json);
+    });
+});
+
+describe("Promise parity", () => {
+
+    let numbers = [];
+
+    beforeEach(() => {
+        numbers = numbers.concat([2, 11, 7, 9, 10]); // renvoie un tableau mais ne change pas le tableau numbers pas de référence comme avec sort par exemple
+    })
+
+    afterEach(() => numbers = []);
+
+    test('Parity test', async  () => {
+
+        for (const number of numbers) {
+            if (number % 2 === 0) {
+                await expect(parity(number)).rejects.toBe('even');
+            }
+
+            if (number % 2 === 1) {
+                await expect(parity(number)).resolves.toBe('odd');
+            }
+        }
     });
 });
